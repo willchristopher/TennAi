@@ -5,3 +5,4 @@ To run locally, do the following:
 Install ALL files in the same folder.
 Locate the index file either through file explorer, finder, or your IDE.
 If you have live server extension installed, run from there. If not, file explorer or finder should have an option to "run through", select safari, chrome, etc.
+To login, username is admin and password is admin123
