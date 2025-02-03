@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SurvAI</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .dashboard-container {
+      display: flex;
+      margin: 20px;
+      align-items: flex-start; /* Align items to the top */
+      height: calc(100vh - 120px); /* Adjust height to center content */
+    }
+    .sidebar {
+      width: 250px;
+      display: flex;
+      flex-direction: column;
+      margin-right: 40px;
+      margin-top: 100px; /* Add more margin to shift down */
+    }
+    .sidebar button {
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .sidebar button:hover {
+      background-color: #e60000;
+    }
+    .content {
+      flex-grow: 1;
+      margin-top: 20px; /* Add margin to shift down */
+    }
+    .summary-title {
+      font-size: 2rem; /* Match other title fonts */
+      color: #ff4d4d;
+      margin-bottom: 20px;
+      font-family: 'Arial', sans-serif; /* Match other title fonts */
+    }
+    .summary-box {
+      background-color: #fff;
+      padding: 30px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-family: 'Arial', sans-serif; /* Match other text fonts */
+      font-size: 1.1rem; /* Match other text fonts */
+      line-height: 1.6; /* Match other text fonts */
+      color: #333; /* Match other text fonts */
+    }
+    .bottom-right-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
+    .bottom-right-button img {
+      width: 50px;
+      height: 50px;
+    }
+    .thought-bubble {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      max-width: 300px;
+      padding: 15px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      display: none;
+    }
+    .thought-bubble p {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #333;
+    }
+    .thought-bubble button {
+      display: block;
+      margin: 0 auto;
+      padding: 5px 10px;
+      background-color: #ff4d4d;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .thought-bubble button:hover {
+      background-color: #e60000;
+    }
+    .welcome-message {
+      margin: 20px;
+      font-size: 1.5rem;
+      color: #333;
+      font-family: 'Arial', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-menu-bar">
+    <a href="index.html" class="menu-button">Back</a>
+    <div class="menu-title">Dashboard</div>
+    <a href="login.html" class="menu-button">Logout</a>
+  </div>
+  <div class="welcome-message" id="welcome-message"></div>
+  <div class="dashboard-container">
+    <div class="sidebar">
+      <button onclick="window.location.href='insights.html'">Detailed Insights</button>
+      <button onclick="window.location.href='survey-builder.html'">Survey Builder</button>
+      <button>Planner</button>
+      <button>Settings</button>
+    </div>
+    <div class="content">
+      <div class="summary-title">Daily Summary</div>
+      <div class="summary-box" style="padding: 40px;">
+        <p>Hello demo business,</p>
+        <p>Overall customer satisfaction: 85%</p>
+        <p>Feedback received in the last week: 120</p>
+        <p>Positive feedback: 90%</p>
+        <p>Negative feedback: 10%</p>
+        <p>Top feedback themes: Quality, Service, Price</p>
+        <p>Recommended action: Focus on improving response times and addressing price concerns.</p>
+        <p>Upcoming surveys: Customer Satisfaction Survey, Product Feedback Survey</p>
+        <p>Next steps: Review detailed insights and plan actions for the upcoming week.</p>
+        <!-- Insert new graphs section inside the summary window -->
+        <div style="display: flex; gap: 20px; margin-top: 20px; height: 300px;">
+          <div style="flex: 1;">
+            <canvas id="dashboardBarChart"></canvas>
+          </div>
+          <div style="flex: 1;">
+            <canvas id="dashboardPieChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Bottom Right Button with Robot Image -->
+  <div class="bottom-right-button">
+    <img src="SurvAIbot.png" alt="Button Image" onclick="showThoughtBubble()">
+  </div>
+  <!-- Thought Bubble -->
+  <div id="thought-bubble" class="thought-bubble">
+    <p>Wow demo business, it appears your products and services are doing great! One of the most frequent issues reported within the last week is that not all of the buttons are functioning properly. I recommend talking to your backend software team to fix this issue. </p>
+    <button onclick="hideThoughtBubble()">Got it, thanks!</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    function showThoughtBubble() {
+      document.getElementById('thought-bubble').style.display = 'block';
+    }
+
+    function hideThoughtBubble() {
+      document.getElementById('thought-bubble').style.display = 'none';
+    }
+
+    function updateWelcomeMessage() {
+      const now = new Date();
+      const hours = now.getHours();
+      let timeOfDay;
+
+      if (hours < 12) {
+        timeOfDay = "Good morning";
+      } else if (hours < 18) {
+        timeOfDay = "Good afternoon";
+      } else {
+        timeOfDay = "Good evening";
+      }
+
+      document.getElementById('welcome-message').textContent = `${timeOfDay}, demo business!`;
+    }
+
+    updateWelcomeMessage();
+
+    // Load bar chart data
+    fetch('dashboardBarData.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        const rows = csvText.trim().split('\n');
+        const labels = [];
+        const dataPoints = [];
+        rows.slice(1).forEach(row => {
+          const cols = row.split(',');
+          labels.push(cols[0]);
+          dataPoints.push(parseInt(cols[1], 10));
+        });
+        const ctxBar = document.getElementById('dashboardBarChart').getContext('2d');
+        new Chart(ctxBar, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Dashboard Stats',
+              data: dataPoints,
+              backgroundColor: ['#ff6384', '#36a2eb']
+            }]
+          },
+          options: {}
+        });
+      });
+
+    // Load pie chart data
+    fetch('dashboardPieData.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        const rows = csvText.trim().split('\n');
+        const labels = [];
+        const dataPoints = [];
+        rows.slice(1).forEach(row => {
+          const cols = row.split(',');
+          labels.push(cols[0]);
+          dataPoints.push(parseInt(cols[1], 10));
+        });
+        const ctxPie = document.getElementById('dashboardPieChart').getContext('2d');
+        new Chart(ctxPie, {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Feedback Distribution',
+              data: dataPoints,
+              backgroundColor: ['#4bc0c0', '#ffcd56']
+            }]
+          },
+          options: {}
+        });
+      });
+  </script>
+</body>
+</html>

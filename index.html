@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TennAi - Welcome</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Revised Menu Bar -->
+  <div class="menu-bar" style="position: relative;">
+    <a href="contact.html" class="contact-button" style="position: absolute; left: 20px; top: 0; color: white; text-decoration: none; font-weight: bold; padding: 10px 20px;">Contact Us</a>
+    <a href="login.html" class="login-button" style="position: absolute; right: 20px; top: 0; color: white; text-decoration: none; font-weight: bold; padding: 10px 20px;">Login</a>
+  </div>
+
+  <!-- Logo Placeholder -->
+  <div class="logo-container">
+    <img src="TennAIlogo_processed.jpg" alt="SurvAI Logo" class="logo">
+  </div>
+
+  <!-- Welcome Message -->
+  <div class="welcome-container">
+    <h1>Welcome to TennAi.</h1>
+    <p>A 10 out of 10 service that every business needs.</p>
+  </div>
+
+  <!-- Revised Details Container -->
+  <div class="details-container">
+    <div class="left-column">
+      <img src="SurvAI, Tennypromo1.mp4" alt="Image 1" class="detail-image">
+      <img src="NewSummaryPromoTennAi.png" alt="Image 2" class="detail-image">
+      <img src="SurvaiDashboardpromo.mp4" alt="Image 3" class="detail-image">
+      <img src="TennAi InsightPromo.png" alt="Image 4" class="detail-image">
+    </div>
+    <div class="right-column">
+      <div class="detail-text">
+        <h2>Your best business partner.</h2>
+        <p>Built around an ever-changing world that relies on AI, TennAi is ready to give your business a competitive edge in customer relations.</p>
+      </div>
+      <div class="detail-text">
+        <h2>A dash-for-all.</h2>
+        <p>TennAi has an easy to use dashboard that anyone can look at and understand. With buttons that instantly make you a productive powerhouse and a generated summary on customer feedback, you have everything you need in a click.</p>
+      </div>
+      <div class="detail-text">
+        <h2>Build a survey in seconds.</h2>
+        <p>With the customizable survey builder, TennAi creates dynamic surveys tailored to specific business needs and increased participation rate.</p>
+      </div>
+      <div class="detail-text">
+        <h2>Get an analysis on anything, anytime.</h2>
+        <p>Our sentiment analysis and insight tools allow you to dive into feedback results and market trends while providing recommended actions based on multiple factors.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Learn More Button -->
+  <div class="learn-more-container">
+    <a href="learn-more.html" class="learn-more-button">Learn More</a>
+  </div>
+
+  <!-- Thought Bubble -->
+  <div id="thought-bubble" class="thought-bubble" style="display: none;">
+    <p>Hi, my name is Tenny! Let's do great things, together.</p>
+    <button onclick="hideThoughtBubble()">Ok!</button>
+  </div>
+
+  <!-- Bottom Right Button with Robot Image -->
+  <div class="bottom-right-button">
+    <img src="SurvAIbot.png" alt="Button Image" onclick="showThoughtBubble()">
+  </div>
+
+  <script>
+    function showThoughtBubble() {
+      document.getElementById('thought-bubble').style.display = 'block';
+    }
+
+    function hideThoughtBubble() {
+      document.getElementById('thought-bubble').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

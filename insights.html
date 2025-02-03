@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detailed Insights - SurvAI</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- ...existing head elements... -->
+</head>
+<body>
+  <div class="dashboard-menu-bar">
+    <a href="dashboard.html" class="menu-button">Back</a>
+    <div class="menu-title">Detailed Insights</div>
+    <a href="login.html" class="menu-button">Logout</a>
+  </div>
+  <div class="insights-container" style="display: flex; margin: 20px; align-items: flex-start; height: calc(100vh - 120px);">
+    <div class="sidebar" style="width: 250px; display: flex; flex-direction: column; margin-right: 40px; margin-top: 100px;">
+      <button onclick="showRecentResponses()" style="background-color: #ff4d4d; color: white; border: none; padding: 15px; margin-bottom: 20px; border-radius: 5px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">Recent Responses</button>
+      <button style="background-color: #ff4d4d; color: white; border: none; padding: 15px; margin-bottom: 20px; border-radius: 5px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">Summarized Responses</button>
+      <button onclick="showTracking()" style="background-color: #ff4d4d; color: white; border: none; padding: 15px; margin-bottom: 20px; border-radius: 5px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">Tracking</button>
+      <button style="background-color: #ff4d4d; color: white; border: none; padding: 15px; margin-bottom: 20px; border-radius: 5px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">Create a Report</button>
+      <button style="background-color: #ff4d4d; color: white; border: none; padding: 15px; margin-bottom: 20px; border-radius: 5px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease;">Previous Reports</button>
+    </div>
+    <div class="content" style="flex-grow: 1; margin-top: 20px;">
+      <h1>Detailed Insights</h1>
+      <!-- Replace with actual insights content -->
+      <p>Here you can view more in-depth statistics and reports on your customer feedback and business performance.</p>
+      <div id="recent-responses-window" style="display: none; padding: 20px; margin: 20px 0; border: 1px solid #ccc; border-radius: 5px; background-color: #fff;">
+        <h2 style="color: #ff4d4d; margin-bottom: 10px; font-family: Arial, sans-serif;">Recent Responses</h2>
+        <!-- Unsorted responses -->
+        <div id="unsorted-responses">
+          <!-- Example 1 -->
+          <div class="response" data-rating="8" style="margin-bottom: 15px;">
+            <strong>John Doe</strong> (john@example.com) • Rating: 8<br>
+            "I really enjoyed the product and found it very useful. The packaging was excellent. Customer service was friendly and prompt. The features met my expectations. I appreciated the detailed instructions provided. Delivery was on time as promised. I would definitely recommend this product."<br>
+            <em>Source: Email</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+          <!-- Example 2 -->
+          <div class="response" data-rating="9" style="margin-bottom: 15px;">
+            <strong>Jane Smith</strong> (jane.smith@example.com) • Rating: 9<br>
+            "The product quality exceeded my expectations. Every detail was carefully considered. I found the design very appealing. The usability is top-notch. It integrates well with my current setup. The performance is consistently reliable. I am very pleased with my purchase."<br>
+            <em>Source: LinkedIn</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+          <!-- Example 3 -->
+          <div class="response" data-rating="7" style="margin-bottom: 15px;">
+            <strong>Michael Lee</strong> (michael.lee@example.com) • Rating: 7<br>
+            "The service was generally good and met most of my needs. The interface is clear and intuitive. Several minor issues were resolved quickly. I found the troubleshooting guide very helpful. The color scheme is pleasant and modern. Customer support was responsive. Overall, a satisfactory experience."<br>
+            <em>Source: Instagram</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+          <!-- Example 4 -->
+          <div class="response" data-rating="10" style="margin-bottom: 15px;">
+            <strong>Emily Davis</strong> (emily.davis@example.com) • Rating: 10<br>
+            "Absolutely exceptional product quality. The design is innovative and robust. Everything functions flawlessly. I appreciated the consistent updates. The customer experience was outstanding. The value for money is superb. I will spread the word to my friends."<br>
+            <em>Source: Email</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+          <!-- Example 5 -->
+          <div class="response" data-rating="6" style="margin-bottom: 15px;">
+            <strong>David Brown</strong> (david.brown@example.com) • Rating: 6<br>
+            "The product arrived on time but had some usability issues. The instructions were a bit confusing. I encountered minor glitches during use. The response from customer support was acceptable. Design felt innovative though not fully polished. Some features are great but others need improvement. I see potential if the updates continue."<br>
+            <em>Source: SMS</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+          <!-- Example 6 -->
+          <div class="response" data-rating="9" style="margin-bottom: 15px;">
+            <strong>Sophia Wilson</strong> (sophia.wilson@example.com) • Rating: 9<br>
+            "A very satisfying purchase overall. The item’s build quality impressed me. The performance is robust enough to exceed demands. I loved the sleek and modern aesthetics. Installation was remarkably simple. The product maintained consistency in every usage. I would positively recommend it to peers."<br>
+            <em>Source: LinkedIn</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+          <!-- Example 7 -->
+          <div class="response" data-rating="8" style="margin-bottom: 15px;">
+            <strong>Oliver Martinez</strong> (oliver.martinez@example.com) • Rating: 8<br>
+            "I was impressed with the innovative features offered. The durability of the product stands out. The user manual was concise yet comprehensive. Support materials helped me fully utilize it. The software integration was seamless. I felt that the design modernizes everyday tasks. Overall, a solid and reliable solution."<br>
+            <em>Source: Instagram</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+          <!-- Example 8 -->
+          <div class="response" data-rating="7" style="margin-bottom: 15px;">
+            <strong>Ava Garcia</strong> (ava.garcia@example.com) • Rating: 7<br>
+            "The product meets the basic expectations with a few exceptions. The design is elegant and minimalistic. I encountered slight delays in performance. The customer care team was supportive. Each feature was thoughtfully implemented. I enjoyed the overall interactive design. Some minor tweaks could make it perfect."<br>
+            <em>Source: SMS</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+          <!-- Example 9 -->
+          <div class="response" data-rating="8" style="margin-bottom: 15px;">
+            <strong>Liam Johnson</strong> (liam.johnson@example.com) • Rating: 8<br>
+            "An engaging product that stands out from the competition. The craftsmanship is superb and attention is paid to detail. I found every function well-executed. The interactive features enhanced my experience. Customer support responded with expertise. The overall design is user-friendly and inviting. I am satisfied with the purchase and look forward to updates."<br>
+            <em>Source: Email</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+          <!-- Example 10 -->
+          <div class="response" data-rating="9" style="margin-bottom: 15px;">
+            <strong>Isabella Rodriguez</strong> (isabella.rodriguez@example.com) • Rating: 9<br>
+            "This is one of the best products I have used recently. The intuitive design made it really simple to navigate. Quality and performance were both excellent. I enjoyed the practical and innovative features. The customer touchpoints were very responsive. The after-sales support cemented my trust in the brand. I am excited to see what improvements come next."<br>
+            <em>Source: LinkedIn</em><br>
+            <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; margin-top: 5px; border-radius: 5px; font-weight: bold; cursor: pointer;">Respond</button>
+          </div>
+        </div>
+        <!-- Sorted responses container -->
+        <div class="sorted-responses" style="display: flex; gap: 20px; margin-top: 20px;">
+          <div id="satisfactory" style="flex: 1; border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
+            <h3 style="color: #ff4d4d;">Satisfactory Responses</h3>
+            <!-- Responses with rating 8-10 will be appended here -->
+          </div>
+          <div id="unsatisfactory" style="flex: 1; border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
+            <h3 style="color: #ff4d4d;">Unsatisfactory Responses</h3>
+            <!-- Responses with rating 7 or below will be appended here -->
+          </div>
+        </div>
+      </div>
+      <!-- Tracking Pane -->
+      <div id="tracking-window" style="display: none; padding: 20px; margin: 20px 0; border: 1px solid #ccc; border-radius: 5px; background-color: #fff; text-align: left;">
+        <div style="display: flex; gap: 20px;">
+          <!-- Survey Traffic Column -->
+          <div style="flex: 1;">
+            <h2 style="color: #ff4d4d; margin-bottom: 10px; font-family: Arial, sans-serif;">Survey Traffic</h2>
+            <!-- Example 1: Social Media -->
+            <div style="margin-bottom: 15px;">
+              <strong>Social Media</strong><br>
+              Responses Recorded: 150<br>
+              Visitors to Survey Site: 300<br>
+              Avg. Response Length: 20 words<br>
+              Avg. Score: 8
+            </div>
+            <!-- Example 2: Email -->
+            <div style="margin-bottom: 15px;">
+              <strong>Email Campaign</strong><br>
+              Responses Recorded: 120<br>
+              Visitors to Survey Site: 250<br>
+              Avg. Response Length: 25 words<br>
+              Avg. Score: 9
+            </div>
+            <!-- Example 3: SMS -->
+            <div style="margin-bottom: 15px;">
+              <strong>SMS Outreach</strong><br>
+              Responses Recorded: 80<br>
+              Visitors to Survey Site: 200<br>
+              Avg. Response Length: 15 words<br>
+              Avg. Score: 7
+            </div>
+            <!-- Example 4: Website -->
+            <div style="margin-bottom: 15px;">
+              <strong>Website Embedded</strong><br>
+              Responses Recorded: 200<br>
+              Visitors to Survey Site: 400<br>
+              Avg. Response Length: 30 words<br>
+              Avg. Score: 8
+            </div>
+          </div>
+          <!-- Active Campaigns Column -->
+          <div style="flex: 1;">
+            <h2 style="color: #ff4d4d; margin-bottom: 10px; font-family: Arial, sans-serif;">Active Campaigns</h2>
+            <!-- Example 1 -->
+            <div style="margin-bottom: 15px;">
+              <strong>Instagram Campaign</strong><br>
+              Start Date: 2025-06-01<br>
+              End Date: 2025-06-30
+            </div>
+            <!-- Example 2 -->
+            <div style="margin-bottom: 15px;">
+              <strong>Initial Product Launch: All Channels </strong><br>
+              Start Date: 2025-09-15<br>
+              End Date: 2025-10-15
+            </div>
+            <!-- Example 3 -->
+            <div style="margin-bottom: 15px;">
+              <strong>Yearly Email Recap</strong><br>
+              Start Date: 2025-12-01<br>
+              End Date: 2026-12-31
+            </div>
+            <!-- Bar Graph Canvas -->
+            <div style="margin-top: 20px;">
+              <canvas id="surveyBarChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ...existing scripts if any... -->
+  <script src="sortResponses.js"></script>
+  <script>
+    function showRecentResponses() {
+      document.getElementById('recent-responses-window').style.display = 'block';
+      document.getElementById('tracking-window').style.display = 'none';
+    }
+    function showTracking() {
+      document.getElementById('tracking-window').style.display = 'block';
+      // Optionally hide other panes:
+      document.getElementById('recent-responses-window').style.display = 'none';
+    }
+  </script>
+  <!-- Add Chart.js CDN and custom script to load CSV and generate the bar graph -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    fetch('surveyTrafficData.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        const rows = csvText.trim().split('\n');
+        const labels = [];
+        const dataPoints = [];
+        rows.slice(1).forEach(row => {
+          const cols = row.split(',');
+          labels.push(cols[0]);
+          dataPoints.push(parseInt(cols[1], 10));
+        });
+        const ctx = document.getElementById('surveyBarChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Responses Recorded',
+              data: dataPoints,
+              backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56']
+            }]
+          },
+          options: {}
+        });
+      });
+  </script>
+</body>
+</html>

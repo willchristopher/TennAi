@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Builder - SurvAI</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .menu-title {
+      font-family: 'Arial', sans-serif; /* Match other title fonts */
+    }
+    .button-row {
+      margin: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    .button-row button {
+      padding: 10px 20px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button-row button:hover {
+      background-color: #e60000;
+    }
+    .main-box {
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      min-height: 300px;
+      background-color: #fff;
+      text-align: left;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: bold; margin-bottom: 5px; }
+    .form-group input, 
+    .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
+    .question-buttons, .toggle-options, .award-options, .award-type-options, .audience-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+    .form-group button[type="button"] { padding: 8px 12px; background-color: #ff4d4d; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
+    .form-group button[type="button"]:hover { background-color: #e60000; }
+    .form-group button[type="submit"] { padding: 10px 20px; background-color: #ff4d4d; color: white; border: none; border-radius: 5px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; }
+    .form-group button[type="submit"]:hover { background-color: #e60000; }
+    /* New: Toggleable selected state */
+    .toggleable.selected { background-color: green !important; }
+    /* New: Sample Questions styling */
+    .sample-question { margin: 15px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+    .sample-question h4 { margin-top: 0; }
+    .sample-options button { margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <div class="dashboard-menu-bar">
+    <a href="dashboard.html" class="menu-button">Back</a>
+    <div class="menu-title">Survey Builder</div>
+    <a href="login.html" class="menu-button">Logout</a>
+  </div>
+
+  <!-- New Button Row -->
+  <div class="button-row">
+    <button id="create-survey">Create New Survey</button>
+    <button id="browse-previous">Browse Previous</button>
+    <button id="load-draft">Load Draft</button>
+    <button id="save-draft">Save Draft</button>
+    <button id="load-with-ai">Load with AI</button>
+  </div>
+
+  <!-- Main Content Box -->
+  <div class="main-box" id="survey-main">
+    <form id="survey-form">
+      <div class="form-group">
+        <label for="survey-name">Survey Name</label>
+        <input type="text" id="survey-name" placeholder="Enter survey name" required>
+      </div>
+      <div class="form-group">
+        <label for="survey-goal">Survey Goal</label>
+        <textarea id="survey-goal" placeholder="What is the purpose of this survey?" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Create Question</label>
+        <div class="question-buttons">
+          <button type="button">Short Response</button>
+          <button type="button">Multiple Choice</button>
+          <button type="button">Rate 1-10</button>
+          <!-- Additional question types can be added here -->
+        </div>
+        <!-- New: Sample Questions Section -->
+        <div class="sample-questions">
+          <div class="sample-question">
+            <h4>Short Response Example</h4>
+            <label for="q1">What is your favorite color?</label>
+            <input type="text" id="q1" placeholder="Type your answer here">
+          </div>
+          <div class="sample-question">
+            <h4>Multiple Choice Example</h4>
+            <label>What is your preferred mode of transportation?</label>
+            <div class="sample-options">
+              <button type="button" class="toggleable">Car</button>
+              <button type="button" class="toggleable">Bicycle</button>
+              <button type="button" class="toggleable">Public Transit</button>
+              <button type="button" class="toggleable">Walking</button>
+            </div>
+          </div>
+          <div class="sample-question">
+            <h4>Rate Option Example</h4>
+            <label>Rate our service from 1 to 10:</label>
+            <div class="sample-options">
+              <button type="button" class="toggleable">1</button>
+              <button type="button" class="toggleable">2</button>
+              <button type="button" class="toggleable">3</button>
+              <button type="button" class="toggleable">4</button>
+              <button type="button" class="toggleable">5</button>
+              <button type="button" class="toggleable">6</button>
+              <button type="button" class="toggleable">7</button>
+              <button type="button" class="toggleable">8</button>
+              <button type="button" class="toggleable">9</button>
+              <button type="button" class="toggleable">10</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Incentivize with AI</label>
+        <div class="toggle-options">
+          <button type="button" class="toggleable">Enable</button>
+          <button type="button" class="toggleable">Disable</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Give out Award</label>
+        <div class="award-options">
+          <button type="button" id="award-enable" class="toggleable">Enable</button>
+          <button type="button" id="award-disable" class="toggleable">Disable</button>
+        </div>
+        <div class="award-type" id="award-type" style="display:none;">
+          <label>Award Type</label>
+          <div class="award-type-options">
+            <button type="button" class="toggleable">Manual</button>
+            <button type="button" class="toggleable">Automatic</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Target Audience</label>
+        <div class="audience-buttons">
+          <button type="button" class="toggleable">All Customers</button>
+          <button type="button" class="toggleable">Unsatisfied Customers</button>
+          <button type="button" class="toggleable">Satisfied Customers</button>
+          <button type="button" class="toggleable">Not Responded Yet</button>
+          <button type="button" class="toggleable">New Customers</button>
+          <!-- Additional audience options can be added here -->
+        </div>
+      </div>
+      <!-- Additional survey options can be inserted here -->
+      <div class="form-group">
+        <button type="submit">Save Survey</button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- New: Bottom Right Button with Robot Image for Tenny -->
+  <div class="bottom-right-button">
+    <img src="SurvAIbot.png" alt="Button Image" onclick="showThoughtBubble()">
+  </div>
+  
+  <!-- New: Thought Bubble for Tenny -->
+  <div id="thought-bubble" class="thought-bubble" style="display: none;">
+    <p>Hi! I'm Tenny, your AI assistant that is not programmed yet. Big things coming soon!</p>
+    <button onclick="hideThoughtBubble()">Ok!</button>
+  </div>
+  
+  <script>
+    function showThoughtBubble() {
+      document.getElementById('thought-bubble').style.display = 'block';
+    }
+    function hideThoughtBubble() {
+      document.getElementById('thought-bubble').style.display = 'none';
+    }
+    // Toggle Award Type Options
+    document.getElementById('award-enable').addEventListener('click', () => {
+      document.getElementById('award-type').style.display = 'block';
+    });
+    document.getElementById('award-disable').addEventListener('click', () => {
+      document.getElementById('award-type').style.display = 'none';
+    });
+    // Handle Survey Form Submission (Example)
+    document.getElementById('survey-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Survey saved!');
+    });
+    // Add toggle functionality for buttons with the class "toggleable"
+    document.querySelectorAll('#survey-main button.toggleable').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.classList.toggle('selected');
+      });
+    });
+  </script>
+</body>
+</html>

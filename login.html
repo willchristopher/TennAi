@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ...existing code... -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - TennAi</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Refined styling for the login form */
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #ff4d4d;
+    }
+    .login-container input {
+      width: calc(100% - 30px);
+      padding: 15px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .login-container button {
+      width: calc(100% - 30px);
+      padding: 15px;
+      background-color: #ff4d4d;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .login-container button:hover {
+      background-color: #e60000;
+    }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .back-to-welcome {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #ff4d4d;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .back-to-welcome:hover {
+      background-color: #e60000;
+    }
+  </style>
+</head>
+<body>
+  <!-- Back to Welcome Button -->
+  <a href="index.html" class="back-to-welcome">Back</a>
+  
+  <!-- Login Form Container -->
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <div id="error" class="error-message"></div>
+  </div>
+  
+  <script>
+    // ...existing code...
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('error');
+      
+      if (username === "admin" && password === "admin123") {
+        // Redirect to Dashboard page
+        window.location.href = "dashboard.html";
+      } else {
+        errorDiv.textContent = "The information is incorrect.";
+      }
+    });
+  </script>
+</body>
+</html>
