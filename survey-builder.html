@@ -69,6 +69,7 @@
     <button id="load-draft">Load Draft</button>
     <button id="save-draft">Save Draft</button>
     <button id="load-with-ai">Load with AI</button>
+    <button id="push-survey">Push Survey</button>
   </div>
 
   <!-- Main Content Box -->
@@ -90,46 +91,18 @@
           <button type="button">Rate 1-10</button>
           <!-- Additional question types can be added here -->
         </div>
-        <!-- New: Sample Questions Section -->
-        <div class="sample-questions">
-          <div class="sample-question">
-            <h4>Short Response Example</h4>
-            <label for="q1">What is your favorite color?</label>
-            <input type="text" id="q1" placeholder="Type your answer here">
-          </div>
-          <div class="sample-question">
-            <h4>Multiple Choice Example</h4>
-            <label>What is your preferred mode of transportation?</label>
-            <div class="sample-options">
-              <button type="button" class="toggleable">Car</button>
-              <button type="button" class="toggleable">Bicycle</button>
-              <button type="button" class="toggleable">Public Transit</button>
-              <button type="button" class="toggleable">Walking</button>
-            </div>
-          </div>
-          <div class="sample-question">
-            <h4>Rate Option Example</h4>
-            <label>Rate our service from 1 to 10:</label>
-            <div class="sample-options">
-              <button type="button" class="toggleable">1</button>
-              <button type="button" class="toggleable">2</button>
-              <button type="button" class="toggleable">3</button>
-              <button type="button" class="toggleable">4</button>
-              <button type="button" class="toggleable">5</button>
-              <button type="button" class="toggleable">6</button>
-              <button type="button" class="toggleable">7</button>
-              <button type="button" class="toggleable">8</button>
-              <button type="button" class="toggleable">9</button>
-              <button type="button" class="toggleable">10</button>
-            </div>
-          </div>
-        </div>
+        <!-- New: Container for dynamic questions -->
+        <div id="generated-questions"></div>
+        <!-- Removed sample questions section -->
       </div>
       <div class="form-group">
         <label>Incentivize with AI</label>
-        <div class="toggle-options">
-          <button type="button" class="toggleable">Enable</button>
-          <button type="button" class="toggleable">Disable</button>
+        <div class="toggle-options" id="incentivize-options">
+          <button type="button" class="toggleable" id="ai-enable">Enable</button>
+          <button type="button" class="toggleable" id="ai-disable">Disable</button>
+          <span id="ai-disclaimer" style="display:none; margin-left:10px; font-size:0.9rem; color:#333;">
+            *** Incentivize with AI will try to improve the amount of feedback received. Customers may not receive all survey questions in order to maximize attention span. Questions may be shortened as well.
+          </span>
         </div>
       </div>
       <div class="form-group">
@@ -141,9 +114,12 @@
         <div class="award-type" id="award-type" style="display:none;">
           <label>Award Type</label>
           <div class="award-type-options">
-            <button type="button" class="toggleable">Manual</button>
-            <button type="button" class="toggleable">Automatic</button>
+            <button type="button" class="toggleable" id="award-manual">Manual</button>
+            <button type="button" class="toggleable" id="award-automatic">Automatic</button>
           </div>
+          <span id="award-disclaimer" style="display:none; font-size:0.9rem; margin-left:10px; color:#333;">
+            Business will be responsible for sending customer the reward.
+          </span>
         </div>
       </div>
       <div class="form-group">
@@ -163,6 +139,9 @@
       </div>
     </form>
   </div>
+  
+  <!-- Container for pushed surveys -->
+  <div id="pushed-surveys"></div>
   
   <!-- New: Bottom Right Button with Robot Image for Tenny -->
   <div class="bottom-right-button">
@@ -190,15 +169,274 @@
       document.getElementById('award-type').style.display = 'none';
     });
     // Handle Survey Form Submission (Example)
-    document.getElementById('survey-form').addEventListener('submit', function(e) {
+    document.getElementById('survey-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      alert('Survey saved!');
+      let name = document.getElementById('survey-name').value;
+      let goal = document.getElementById('survey-goal').value;
+      // Collect dynamically added questions (basic example)
+      let questions = Array.from(document.querySelectorAll('#generated-questions .dynamic-question'))
+                          .map(div => div.innerText);
+      try {
+        await fetch('/saveSurvey', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, goal, questions })
+        });
+        alert('Survey saved!');
+      } catch(er) {
+        console.error(er);
+        alert('Error saving survey.');
+      }
     });
     // Add toggle functionality for buttons with the class "toggleable"
     document.querySelectorAll('#survey-main button.toggleable').forEach(btn => {
       btn.addEventListener('click', function() {
         this.classList.toggle('selected');
       });
+    });
+    document.getElementById('create-survey').addEventListener('click', () => {
+      alert('New survey created!');
+    });
+    document.getElementById('browse-previous').addEventListener('click', () => {
+      alert('Browsing previous surveys...');
+    });
+    // Save Draft: send current survey data (incl. questions) to backend
+    document.getElementById('save-draft').addEventListener('click', async () => {
+      let name = document.getElementById('survey-name').value;
+      let goal = document.getElementById('survey-goal').value;
+      let questions = Array.from(document.querySelectorAll('#generated-questions .dynamic-question'))
+                          .map(div => div.innerText);
+      try {
+        await fetch('/saveDraft', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, goal, questions })
+        });
+        alert('Draft saved!');
+      } catch(er) {
+        console.error(er);
+        alert('Error saving draft.');
+      }
+    });
+    // Load Draft: fetch draft list and load chosen draft into builder
+    document.getElementById('load-draft').addEventListener('click', async () => {
+      try {
+        let res = await fetch('/loadDraft');
+        let drafts = await res.json();
+        if(drafts.length === 0) {
+          alert('No drafts available.');
+          return;
+        }
+        // For simplicity, load the first draft
+        let draft = drafts[0];
+        document.getElementById('survey-name').value = draft.name;
+        document.getElementById('survey-goal').value = draft.goal;
+        document.getElementById('generated-questions').innerHTML = '';
+        if(draft.questions) {
+          draft.questions.forEach(q => {
+            let div = document.createElement('div');
+            div.className = 'dynamic-question';
+            div.innerText = q;
+            document.getElementById('generated-questions').appendChild(div);
+          });
+        }
+        alert('Draft loaded.');
+      } catch(er) {
+        console.error(er);
+        alert('Error loading draft.');
+      }
+    });
+    // Updated Push Survey event listener using hard-coded example surveys
+    document.getElementById('push-survey').addEventListener('click', () => {
+      // Hide the survey builder window
+      document.getElementById('survey-main').style.display = 'none';
+      
+      // Use example surveys from backend
+      const surveys = [
+        {
+          id: 1,
+          name: 'Customer Satisfaction Survey',
+          goal: 'Measure customer satisfaction levels.',
+          date: new Date('2023-01-01'),
+          startDate: new Date('2023-01-05'),
+          endDate: new Date('2023-01-20')
+        },
+        {
+          id: 2,
+          name: 'Product Feedback Survey',
+          goal: 'Collect feedback on recently launched product.',
+          date: new Date('2023-02-10'),
+          startDate: new Date('2023-02-15'),
+          endDate: new Date('2023-03-01')
+        },
+        {
+          id: 3,
+          name: 'Employee Engagement Survey',
+          goal: 'Assess employee satisfaction and engagement.',
+          date: new Date('2023-03-05'),
+          startDate: new Date('2023-03-10'),
+          endDate: new Date('2023-03-25')
+        }
+      ];
+      
+      const container = document.getElementById('pushed-surveys');
+      container.innerHTML = ''; // clear previous content
+  
+      // Build an organized table structure
+      let table = document.createElement('table');
+      table.style.width = '100%';
+      table.style.borderCollapse = 'collapse';
+      table.innerHTML = `
+        <thead>
+          <tr style="background: #f2f2f2;">
+            <th style="padding: 8px; border: 1px solid #ddd;">Title</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">Created</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">Start Date</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">End Date</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">Purpose</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      `;
+      const tbody = table.querySelector('tbody');
+      surveys.forEach(survey => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="padding: 8px; border: 1px solid #ddd;">${survey.name}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${new Date(survey.date).toLocaleString()}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${new Date(survey.startDate).toLocaleDateString()}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${new Date(survey.endDate).toLocaleDateString()}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${survey.goal}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">
+            <button onclick="publishSurvey('${survey.id}')">Publish</button>
+            <button onclick="editSurvey('${survey.id}')">Edit</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      container.appendChild(table);
+      container.style.display = 'block';
+    });
+    // Dummy functions for publish and edit actions
+    async function publishSurvey(id) {
+      try {
+        await fetch('/publishSurvey', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        alert('Survey published.');
+      } catch(er) {
+        console.error(er);
+        alert('Error publishing survey.');
+      }
+    }
+    async function editSurvey(id) {
+      try {
+        let res = await fetch('/editSurvey?id=' + id);
+        let survey = await res.json();
+        // Show the survey builder and hide pushed surveys container
+        document.getElementById('survey-main').style.display = 'block';
+        document.getElementById('pushed-surveys').style.display = 'none';
+        // Preload survey details into the form
+        document.getElementById('survey-name').value = survey.name;
+        document.getElementById('survey-goal').value = survey.goal || '';
+        const generatedContainer = document.getElementById('generated-questions');
+        generatedContainer.innerHTML = ''; // clear existing dynamic questions
+        if(survey.questions && survey.questions.length > 0) {
+          survey.questions.forEach(q => {
+            let div = document.createElement('div');
+            div.className = 'dynamic-question';
+            div.innerText = q;
+            generatedContainer.appendChild(div);
+          });
+        }
+      } catch(er) {
+        console.error(er);
+        alert('Error loading survey for editing.');
+      }
+    }
+    // Updated function to add a dynamic question with a delete button
+    function addQuestion(type) {
+      const container = document.getElementById('generated-questions');
+      let qDiv = document.createElement('div');
+      qDiv.className = 'dynamic-question';
+      if (type.includes('Short')) {
+        qDiv.innerHTML = `
+          <label>Short Response Question:</label>
+          <input type="text" placeholder="Your question here">
+        `;
+      } else if (type.includes('Multiple')) {
+        qDiv.innerHTML = `
+          <label>Multiple Choice Question:</label>
+          <input type="text" placeholder="Your question here">
+          <br>
+          <textarea placeholder="Enter choices separated by commas"></textarea>
+        `;
+      } else if (type.includes('Rate')) {
+        qDiv.innerHTML = `
+          <label>Rate 1-10 Question:</label>
+          <input type="text" placeholder="Your question here">
+        `;
+      }
+      // Create and append a small delete button
+      let deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.style.fontSize = '0.8rem';
+      deleteBtn.style.marginLeft = '10px';
+      deleteBtn.addEventListener('click', function() {
+        container.removeChild(qDiv);
+      });
+      qDiv.appendChild(deleteBtn);
+      container.appendChild(qDiv);
+    }
+    // Attach event listeners to question type buttons
+    document.querySelectorAll('.question-buttons button').forEach(btn => {
+      btn.addEventListener('click', function() { addQuestion(this.textContent); });
+    });
+    // Event listeners for Incentivize with AI disclaimer
+    document.getElementById('ai-enable').addEventListener('click', () => {
+      document.getElementById('ai-disclaimer').style.display = 'inline';
+    });
+    document.getElementById('ai-disable').addEventListener('click', () => {
+      document.getElementById('ai-disclaimer').style.display = 'none';
+    });
+
+    // Incentivize with AI: single selection logic
+    document.getElementById('ai-enable').addEventListener('click', function() {
+      document.getElementById('ai-enable').classList.add('selected');
+      document.getElementById('ai-disable').classList.remove('selected');
+      document.getElementById('ai-disclaimer').style.display = 'inline';
+    });
+    document.getElementById('ai-disable').addEventListener('click', function() {
+      document.getElementById('ai-disable').classList.add('selected');
+      document.getElementById('ai-enable').classList.remove('selected');
+      document.getElementById('ai-disclaimer').style.display = 'none';
+    });
+
+    // Give out Award: single selection logic
+    document.getElementById('award-enable').addEventListener('click', function() {
+      document.getElementById('award-enable').classList.add('selected');
+      document.getElementById('award-disable').classList.remove('selected');
+      document.getElementById('award-type').style.display = 'block';
+    });
+    document.getElementById('award-disable').addEventListener('click', function() {
+      document.getElementById('award-disable').classList.add('selected');
+      document.getElementById('award-enable').classList.remove('selected');
+      document.getElementById('award-type').style.display = 'none';
+    });
+
+    // Award Type buttons event listeners for disclaimer display
+    document.getElementById('award-manual').addEventListener('click', function() {
+      this.classList.add('selected');
+      document.getElementById('award-automatic').classList.remove('selected');
+      document.getElementById('award-disclaimer').style.display = 'inline';
+    });
+    document.getElementById('award-automatic').addEventListener('click', function() {
+      this.classList.add('selected');
+      document.getElementById('award-manual').classList.remove('selected');
+      document.getElementById('award-disclaimer').style.display = 'none';
     });
   </script>
 </body>

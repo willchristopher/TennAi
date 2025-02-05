@@ -107,19 +107,24 @@
   </style>
 </head>
 <body>
+  <!-- Top navigation bar: Displays 'Back' and 'Logout' buttons and the 'Dashboard' title -->
   <div class="dashboard-menu-bar">
     <a href="index.html" class="menu-button">Back</a>
     <div class="menu-title">Dashboard</div>
     <a href="login.html" class="menu-button">Logout</a>
   </div>
+  <!-- Welcome message area: Dynamically updates based on time of day -->
   <div class="welcome-message" id="welcome-message"></div>
+  <!-- Main dashboard content container: Holds sidebar and summary box -->
   <div class="dashboard-container">
+    <!-- Sidebar with navigation buttons -->
     <div class="sidebar">
       <button onclick="window.location.href='insights.html'">Detailed Insights</button>
       <button onclick="window.location.href='survey-builder.html'">Survey Builder</button>
       <button>Planner</button>
       <button>Settings</button>
     </div>
+    <!-- Main content area for daily summary and graphs -->
     <div class="content">
       <div class="summary-title">Daily Summary</div>
       <div class="summary-box" style="padding: 40px;">
@@ -144,7 +149,7 @@
       </div>
     </div>
   </div>
-  <!-- Bottom Right Button with Robot Image -->
+  <!-- Bottom right "robot" button for showing a helpful thought bubble -->
   <div class="bottom-right-button">
     <img src="SurvAIbot.png" alt="Button Image" onclick="showThoughtBubble()">
   </div>
@@ -153,6 +158,7 @@
     <p>Wow demo business, it appears your products and services are doing great! One of the most frequent issues reported within the last week is that not all of the buttons are functioning properly. I recommend talking to your backend software team to fix this issue. </p>
     <button onclick="hideThoughtBubble()">Got it, thanks!</button>
   </div>
+  <!-- Script section: Handles time-based greeting, chart data fetching, and bubble visibility -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     function showThoughtBubble() {

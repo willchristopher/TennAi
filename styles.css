@@ -341,3 +341,12 @@ body {
 .dashboard-menu-bar .menu-button:hover {
   background-color: #e60000; /* Darker red on hover */
 }
+
+/* Global button hover animation for buttons without one */
+button {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}

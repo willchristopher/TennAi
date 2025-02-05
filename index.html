@@ -1,38 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Meta tags for character set and viewport settings -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Page title -->
   <title>TennAi - Welcome</title>
+  <!-- Link to external stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <!-- Revised Menu Bar -->
   <div class="menu-bar" style="position: relative;">
+    <!-- Contact Us button -->
     <a href="contact.html" class="contact-button" style="position: absolute; left: 20px; top: 0; color: white; text-decoration: none; font-weight: bold; padding: 10px 20px;">Contact Us</a>
+    <!-- Login button -->
     <a href="login.html" class="login-button" style="position: absolute; right: 20px; top: 0; color: white; text-decoration: none; font-weight: bold; padding: 10px 20px;">Login</a>
   </div>
 
   <!-- Logo Placeholder -->
   <div class="logo-container">
+    <!-- Company logo -->
     <img src="TennAIlogo_processed.jpg" alt="SurvAI Logo" class="logo">
   </div>
 
   <!-- Welcome Message -->
   <div class="welcome-container">
+    <!-- Main welcome heading -->
     <h1>Welcome to TennAi.</h1>
-    <p>A 10 out of 10 service that every business needs.</p>
+    <!-- Subheading with a brief description -->
+    <p>A 10 out of 10 customer feedback service that every business needs.</p>
   </div>
 
   <!-- Revised Details Container -->
   <div class="details-container">
     <div class="left-column">
+      <!-- Detail images/videos -->
       <img src="SurvAI, Tennypromo1.mp4" alt="Image 1" class="detail-image">
       <img src="NewSummaryPromoTennAi.png" alt="Image 2" class="detail-image">
       <img src="SurvaiDashboardpromo.mp4" alt="Image 3" class="detail-image">
       <img src="TennAi InsightPromo.png" alt="Image 4" class="detail-image">
     </div>
     <div class="right-column">
+      <!-- Detail text sections -->
       <div class="detail-text">
         <h2>Your best business partner.</h2>
         <p>Built around an ever-changing world that relies on AI, TennAi is ready to give your business a competitive edge in customer relations.</p>
@@ -54,20 +64,25 @@
 
   <!-- Learn More Button -->
   <div class="learn-more-container">
+    <!-- Link to learn more page -->
     <a href="learn-more.html" class="learn-more-button">Learn More</a>
   </div>
 
   <!-- Thought Bubble -->
   <div id="thought-bubble" class="thought-bubble" style="display: none;">
+    <!-- Thought bubble text -->
     <p>Hi, my name is Tenny! Let's do great things, together.</p>
+    <!-- Button to hide thought bubble -->
     <button onclick="hideThoughtBubble()">Ok!</button>
   </div>
 
   <!-- Bottom Right Button with Robot Image -->
   <div class="bottom-right-button">
+    <!-- Robot image that triggers thought bubble -->
     <img src="SurvAIbot.png" alt="Button Image" onclick="showThoughtBubble()">
   </div>
 
+  <!-- JavaScript functions to show/hide thought bubble -->
   <script>
     function showThoughtBubble() {
       document.getElementById('thought-bubble').style.display = 'block';
